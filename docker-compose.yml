@@ -1,0 +1,20 @@
+services:
+  # Base de Datos Vectorial para RAG
+  qdrant:
+    image: qdrant/qdrant:latest
+    container_name: qdrant_db
+    ports:
+      - "6333:6333" # Puerto para la API REST e interfaz web
+      - "6334:6334" # Puerto para gRPC (más rápido para grandes volúmenes)
+    volumes:
+      - ./qdrant_storage:/qdrant/storage
+
+  # Servidor de Inferencia para LLM y Embeddings
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama_server
+    ports:
+      - "11434:11434"
+    volumes:
+      - ./ollama_data:/root/.ollama
+    # Nota: Si tienen GPU NVIDIA, deben agregar soporte de hardware aquí
